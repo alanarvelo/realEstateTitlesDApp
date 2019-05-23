@@ -2,6 +2,13 @@
 
 The capstone will build upon the knowledge you have gained in the course in order to build a decentralized housing product. 
 
+## Deployed Contracts (Rinkeby)
+SolnSquareVerifier.sol at: `0xC5BB603498a5Ea4FdA7bb84d8ea0817732fcdDb5`
+
+Verifier.sol at:
+`0x5fD040813E5ea974a337BdDdd56d19319d8BEE3c`
+
+
 # Project Resources
 
 * [Remix - Solidity IDE](https://remix.ethereum.org/)
