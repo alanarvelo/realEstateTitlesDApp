@@ -13,6 +13,18 @@ contract('Verifier', accounts => {
             this.solnSquareVerifierContract = await SolnSquareVerifier.new(this.verifierContract.address, 'Real Estate Title Token', 'RETT');
         });
 
+        it('should have set name', async function () { 
+            let name = await this.solnSquareVerifierContract.name.call();
+            console.log(name);
+            assert.equal(name, 'Real Estate Title Token', "returned name is wrong")
+        })
+
+        it('should have set symbol', async function () { 
+            let symbol = await this.solnSquareVerifierContract.symbol.call();
+            console.log(symbol);
+            assert.equal(symbol, 'RETT', "returned symbol is wrong")
+        })
+
         it('token is minted appropriately with 3**2=9 solution', async function () { 
             let mintResult = await this.solnSquareVerifierContract.mint.call(
                 proof39['proof']['A'], proof39['proof']['A_p'],
@@ -40,6 +52,11 @@ contract('Verifier', accounts => {
             assert.equal(mintResult3.logs[0]['event'], 'SolutionAdded', "solution was not recorded");
         });
 
+        it('token minted appropriately', async function () { 
+            let mintedOwner = await this.solnSquareVerifierContract.ownerOf.call(1);
+            assert.equal(mintedOwner, owner, "token not minted by owner")
+        })
+
         it('token cannot be minted twice with the same solution', async function () { 
             let accessDenied = false;
             try { 
@@ -53,16 +70,18 @@ contract('Verifier', accounts => {
             assert.equal(accessDenied, true, "unique solution logic not working");
         });
 
-        it('should have set name', async function () { 
-            let name = await this.solnSquareVerifierContract.name.call();
-            console.log(name);
-            assert.equal(name, 'Real Estate Title Token', "returned name is wrong")
-        })
+        it('token is minted appropriately with 2**2=4 solution', async function () { 
+            let mintResult4 = await this.solnSquareVerifierContract.mint(
+                proof24['proof']['A'], proof24['proof']['A_p'],
+                proof24['proof']['B'], proof24['proof']['B_p'],
+                proof24['proof']['C'], proof24['proof']['C_p'],
+                proof24['proof']['H'], proof24['proof']['K'], proof24['input']);
+            assert.equal(mintResult4.logs[0]['event'], 'SolutionAdded', "solution was not recorded");
+        });
 
-        it('should have set symbol', async function () { 
-            let symbol = await this.solnSquareVerifierContract.symbol.call();
-            console.log(symbol);
-            assert.equal(symbol, 'RETT', "returned symbol is wrong")
+        it('token minted appropriately', async function () { 
+            let mintedOwner2 = await this.solnSquareVerifierContract.ownerOf.call(2);
+            assert.equal(mintedOwner2, owner, "token not minted by owner")
         })
 
     
