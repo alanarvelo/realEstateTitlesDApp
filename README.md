@@ -17,6 +17,18 @@ Who them put 5 of them on sale. Those 5 were bought by:
 `0x627306090abab3a6e1400e9345bc60c78a8bef57`
 Who then made an offer for a 6th one which was accepted. 
 
+## To test & run locally
+Please follow this video, https://youtu.be/_PzVrTxWjIk, for step-by-step setup. 
+
+
+1. Clone the repository 
+2. Run `npm install` in your terminal
+3. Run a local blockchain by using Ganche client or GUI
+4. Run the test files within the test folder with `truffle test path/to/test/TestSolnSquareVerifier.js
+
+## Contract ABIs
+Contract ABI can be found in the eth-contracts/build/contracts folder.
+
 
 # Project Resources
 

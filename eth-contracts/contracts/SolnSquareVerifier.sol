@@ -34,6 +34,10 @@ contract SolnSquareVerifier is ERC721Mintable {
         emit SolutionAdded(counter.current(), submitter);
     }
 
+    function solution(bytes32 solHash) public view returns(uint256, address) {
+        return (solutions[solHash].tokenId, solutions[solHash].submitter);
+    }
+
     function mint(
             uint[2] memory a,
             uint[2] memory a_p,

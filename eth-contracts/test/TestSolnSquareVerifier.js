@@ -43,13 +43,13 @@ contract('Verifier', accounts => {
             assert.equal(true, mintResult2, "not succesfully minted");
         });
 
-        it('solution is saved', async function () { 
+        it('SolutionAdded event is emitted', async function () { 
             let mintResult3 = await this.solnSquareVerifierContract.mint(
                 proof39['proof']['A'], proof39['proof']['A_p'],
                 proof39['proof']['B'], proof39['proof']['B_p'],
                 proof39['proof']['C'], proof39['proof']['C_p'],
                 proof39['proof']['H'], proof39['proof']['K'], proof39['input']);
-            assert.equal(mintResult3.logs[0]['event'], 'SolutionAdded', "solution was not recorded");
+            assert.equal(mintResult3.logs[0]['event'], 'SolutionAdded', "SolutionAdded event not emitted");
         });
 
         it('token minted appropriately', async function () { 
@@ -70,13 +70,13 @@ contract('Verifier', accounts => {
             assert.equal(accessDenied, true, "unique solution logic not working");
         });
 
-        it('token is minted appropriately with 2**2=4 solution', async function () { 
+        it('SolutionAdded event emitted with 2**2=4 solution', async function () { 
             let mintResult4 = await this.solnSquareVerifierContract.mint(
                 proof24['proof']['A'], proof24['proof']['A_p'],
                 proof24['proof']['B'], proof24['proof']['B_p'],
                 proof24['proof']['C'], proof24['proof']['C_p'],
                 proof24['proof']['H'], proof24['proof']['K'], proof24['input']);
-            assert.equal(mintResult4.logs[0]['event'], 'SolutionAdded', "solution was not recorded");
+            assert.equal(mintResult4.logs[0]['event'], 'SolutionAdded', "SolutionAdded event not emitted");
         });
 
         it('token minted appropriately', async function () { 
@@ -84,27 +84,44 @@ contract('Verifier', accounts => {
             assert.equal(mintedOwner2, owner, "token not minted by owner")
         })
 
-    
+        it('solution is stored in mapping', async function () { 
+            let enc = web3.eth.abi.encodeParameters(
+                ['uint256[2]', 'uint256[2]',
+                'uint256[2][2]', 'uint256[2]',
+                'uint256[2]', 'uint256[2]',
+                'uint256[2]', 'uint256[2]', 'uint256[2]'],
+                [proof39['proof']['A'], proof39['proof']['A_p'],
+                proof39['proof']['B'], proof39['proof']['B_p'],
+                proof39['proof']['C'], proof39['proof']['C_p'],
+                proof39['proof']['H'], proof39['proof']['K'], proof39['input']]);
+            let solHash = web3.utils.soliditySha3(enc);
 
-    });
+            let solution = await this.solnSquareVerifierContract.solution.call(solHash);
+            console.log(solution[0].toNumber());
+            assert.equal(solution[0].toNumber() == 1, true,  "solution was saved")
+        });
+
+        it('second solution is stored in mapping', async function () { 
+            let enc = web3.eth.abi.encodeParameters(
+                ['uint256[2]', 'uint256[2]',
+                'uint256[2][2]', 'uint256[2]',
+                'uint256[2]', 'uint256[2]',
+                'uint256[2]', 'uint256[2]', 'uint256[2]'],
+                [proof24['proof']['A'], proof24['proof']['A_p'],
+                proof24['proof']['B'], proof24['proof']['B_p'],
+                proof24['proof']['C'], proof24['proof']['C_p'],
+                proof24['proof']['H'], proof24['proof']['K'], proof24['input']]);
+            let solHash = web3.utils.soliditySha3(enc);
+
+            let solution = await this.solnSquareVerifierContract.solution.call(solHash);
+            console.log(solution[0].toNumber());
+            assert.equal(solution[0].toNumber() == 2, true,  "solution was saved")
+        });
+
+    })
 
 })
 
 // Test if a new solution can be added for contract - SolnSquareVerifier
 
 // Test if an ERC721 token can be minted for contract - SolnSquareVerifier
-
-
-
-
-// it('solution is stored in contract', async function () { 
-        //     let enc = web3.eth.abi.encodeParameters(proof39['proof']['A'], proof39['proof']['A_p'],
-        //         proof39['proof']['B'], proof39['proof']['B_p'],
-        //         proof39['proof']['C'], proof39['proof']['C_p'],
-        //         proof39['proof']['H'], proof39['proof']['K'], proof39['input']);
-        //     console.log(enc);
-        //     console.log(enc.value);
-        //     let solHash = web3.utils.soliditySha3(enc.value);
-        //     let solution = await this.solnSquareVerifierContract.solutions.call(solHash);
-        //     // let count = await this.solnSquareVerifierContract.counter.call();
-        //     // assert.equal(count, 1, "counter increased")
