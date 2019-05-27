@@ -18,7 +18,7 @@ Who them put 5 of them on sale. Those 5 were bought by:
 Who then made an offer for a 6th one which was accepted. 
 
 ## To test & run locally
-Please follow this video, https://youtu.be/_PzVrTxWjIk, for step-by-step setup. 
+Please follow this video, https://youtu.be/EoQqSsjEQ-w, for step-by-step setup. 
 
 
 1. Clone the repository 
